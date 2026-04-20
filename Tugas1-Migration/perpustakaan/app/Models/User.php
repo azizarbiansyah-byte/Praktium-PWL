@@ -18,10 +18,17 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $table = 'users';
+    protected $primaryKey = 'npm';
+    public $incrementing = false;
+
     protected $fillable = [
-        'name',
+        'npm',
+        'username',
+        'first_name',
+        'last_name',
         'email',
-        'password',
+        'password'
     ];
 
     /**
@@ -39,11 +46,16 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+   protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class, 'user_npm', 'npm');
     }
 }
